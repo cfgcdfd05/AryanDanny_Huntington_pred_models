@@ -7,8 +7,9 @@ RAW_DIR = "GSE33000"
 OUTPUT_DIR = "datasets"
 
 MARKERS = [
-    "TUT7", "PPP1CC", "CEBPB", "CEBPD", "FTO", "METTL16",
+    "TUT7", "PPP1CC", "CEBPB", "CEBPD", "FTO",
     "IGF2BP3", "YTHDF1", "YTHDF2", "YTHDF3", "YTHDC1", "YTHDC2",
+    "IGF2BP1", "IGF2BP2", "ALYREF", "METTL14", "METTL16",
 ]
 
 MATRIX_FILE = os.path.join(RAW_DIR, "GSE33000_series_matrix.txt")
