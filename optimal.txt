@@ -1,0 +1,12 @@
+Using 5-fold StratifiedKFold for GridSearchCV
+Best SVM params: {'C': 10, 'kernel': 'rbf'}
+  CV best ROC-AUC: 0.6880  |  Test ROC-AUC: 0.7246
+
+Best GLM params: {'C': 0.1, 'penalty': 'l2'}
+  CV best ROC-AUC: 0.6802  |  Test ROC-AUC: 0.8116
+
+Best RandomForest params: {'max_depth': 5, 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 100}
+  CV best ROC-AUC: 0.6224  |  Test ROC-AUC: 0.7657
+
+Best XGBoost params: {'learning_rate': 0.05, 'max_depth': 3, 'n_estimators': 200, 'subsample': 0.8}
+  CV best ROC-AUC: 0.5950  |  Test ROC-AUC: 0.7295
