@@ -4,7 +4,7 @@ This project investigates whether a panel of 12 m6A (RNA methylation) related ge
 
 ## Biomarker panel
 
-All four datasets are restricted to the same 12 candidate genes:
+Three of the four datasets (GSE3790, GSE1751, GSE64810) are restricted to the same 12 candidate genes:
 
 ```
 TUT7, PPP1CC, CEBPB, CEBPD, FTO, METTL16,
@@ -12,6 +12,8 @@ IGF2BP3, YTHDF1, YTHDF2, YTHDF3, YTHDC1, YTHDC2
 ```
 
 These genes are all involved in writing, reading, or erasing the m6A RNA modification. Not every gene is present in every dataset — coverage depends on the microarray platform used or on upstream filtering during RNA-seq quantification (see per-dataset notes below).
+
+**GSE33000 uses a separate, 5-gene panel instead**: `IGF2BP1, IGF2BP2, ALYREF, METTL14, METTL16`. Only 2 of these 5 genes are actually present on GSE33000's platform — see the GSE33000 note below for details. Because of this, GSE33000 is not directly comparable gene-for-gene against the other three datasets, and any cross-dataset feature-importance comparison should be limited to genes that actually overlap between panels (`METTL16` is the only gene common to both lists, though it happens to be one of the ones missing from GPL4372).
 
 ---
 
@@ -35,6 +37,8 @@ RNA-seq dataset (BA9 prefrontal cortex), quantified as DESeq2-normalized counts,
 
 ### GSE33000
 Custom Agilent array (GPL4372), prefrontal cortex tissue, containing three disease-status groups: Alzheimer's disease, Huntington's disease, and non-demented control (parsed from a `!Sample_characteristics_ch2` line starting with `"disease status:"`). Alzheimer's disease samples are excluded during extraction to preserve a binary HD-vs-control setup consistent with the other three datasets.
+
+This dataset uses a **different gene panel** than the other three: `IGF2BP1, IGF2BP2, ALYREF, METTL14, METTL16` (5 genes, not the 12-gene panel described above). Of these, **only IGF2BP1 and IGF2BP2 are present on GPL4372** — `ALYREF`, `METTL14`, and `METTL16` do not map to any probe on this platform and are dropped during extraction. `TUT7` (from the original 12-gene panel) is also absent from GPL4372, for reference. As a result, the GSE33000 model in this project trains on only **2 genes**, and results should be interpreted accordingly — with this few features, model comparisons (SVM vs. Random Forest vs. XGBoost, etc.) mostly reduce to how each algorithm handles a 2-dimensional input, rather than meaningfully testing the broader biomarker panel.
 
 ---
 
@@ -83,4 +87,5 @@ Given the small sample sizes in these datasets (ranging from roughly 13 to a few
 - **GSE64810 is missing 2 of 12 genes** (CEBPD, YTHDF2) due to upstream filtering in the provided normalized count matrix — models for this dataset are trained on 10 genes, not 12.
 - **GSE1751 excludes 5 presymptomatic HD samples** to preserve a clean binary comparison; these carry the HD mutation but have not yet developed symptoms.
 - **GSE33000 excludes all Alzheimer's disease samples**, keeping only HD vs. non-demented control.
+- **GSE33000 uses a different, smaller gene panel** (5 genes instead of 12), and only 2 of those 5 (`IGF2BP1`, `IGF2BP2`) are actually present on the GPL4372 platform — `ALYREF`, `METTL14`, and `METTL16` are not covered by this array. The GSE33000 model is therefore trained on just 2 features, which limits how much weight its results should be given relative to the other three datasets.
 - **Tissue and platform differ across datasets** (blood vs. brain; microarray vs. RNA-seq), so a gene's importance in one dataset does not necessarily generalize to another — genes that rank highly for HD prediction consistently across multiple datasets are a stronger signal than agreement within just one.
